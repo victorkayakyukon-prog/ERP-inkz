@@ -1,4 +1,4 @@
-import type { Role } from '@prisma/client';
+import { Prisma, type Role } from '@prisma/client';
 import { forbidden } from './errors.js';
 
 /**
@@ -103,10 +103,15 @@ const PRICE_FIELDS = new Set([
 /**
  * Recursively removes money fields so the shop-floor and install views never
  * carry pricing over the wire in the first place.
+ *
+ * Class instances (Date, Prisma.Decimal) are returned untouched: rebuilding
+ * them as plain objects would strip their prototype, and a Decimal that is no
+ * longer a Decimal serializes as `[object Object]` instead of a number.
  */
 export function stripPricing<T>(payload: T): T {
   if (Array.isArray(payload)) return payload.map((entry) => stripPricing(entry)) as unknown as T;
-  if (payload && typeof payload === 'object' && !(payload instanceof Date)) {
+  if (payload instanceof Date || payload instanceof Prisma.Decimal) return payload;
+  if (payload && typeof payload === 'object') {
     const out: Record<string, unknown> = {};
     for (const [key, value] of Object.entries(payload as Record<string, unknown>)) {
       if (PRICE_FIELDS.has(key)) continue;

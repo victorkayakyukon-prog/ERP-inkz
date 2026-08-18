@@ -1,0 +1,52 @@
+services:
+  db:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_USER: signshop
+      POSTGRES_PASSWORD: signshop
+      POSTGRES_DB: signshop
+    ports:
+      - '5432:5432'
+    volumes:
+      - db-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready -U signshop']
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  server:
+    build:
+      context: .
+      dockerfile: server/Dockerfile
+    environment:
+      DATABASE_URL: postgresql://signshop:signshop@db:5432/signshop?schema=public
+      JWT_SECRET: ${JWT_SECRET:-dev-secret-change-me-in-production}
+      PORT: '4000'
+      HOST: 0.0.0.0
+      CORS_ORIGIN: http://localhost:5173,http://localhost:8080
+      UPLOAD_DIR: /data/uploads
+      STORAGE_DRIVER: local
+      NODE_ENV: production
+    ports:
+      - '4000:4000'
+    volumes:
+      - uploads:/data/uploads
+    depends_on:
+      db:
+        condition: service_healthy
+    # Migrations run on boot so a fresh checkout comes up ready to use.
+    command: sh -c "npx prisma migrate deploy && node dist/index.js"
+
+  web:
+    build:
+      context: .
+      dockerfile: web/Dockerfile
+    ports:
+      - '8080:80'
+    depends_on:
+      - server
+
+volumes:
+  db-data:
+  uploads:
