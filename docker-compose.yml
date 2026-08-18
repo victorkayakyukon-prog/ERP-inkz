@@ -36,7 +36,7 @@ services:
       db:
         condition: service_healthy
     # Migrations run on boot so a fresh checkout comes up ready to use.
-    command: sh -c "npx prisma migrate deploy && node dist/index.js"
+    command: sh -c "npx prisma migrate deploy && node dist/src/index.js"
 
   web:
     build:

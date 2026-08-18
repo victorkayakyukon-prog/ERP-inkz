@@ -20,4 +20,4 @@ COPY --from=build /app/server/package.json ./package.json
 
 RUN mkdir -p /data/uploads
 EXPOSE 4000
-CMD ["node", "dist/index.js"]
+CMD ["node", "dist/src/index.js"]

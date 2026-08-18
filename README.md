@@ -10,9 +10,14 @@ plus the customer record, the shop schedule and the material inventory behind it
 ### Docker (nothing installed but Docker)
 
 ```bash
-docker compose up --build          # db + API + web
-docker compose exec server npx prisma db seed   # optional demo data
+docker compose up --build                        # db + API + web
+
+# In a second terminal, load the demo shop (optional but recommended):
+docker compose exec server node dist/prisma/seed.js
 ```
+
+The runtime image ships compiled JavaScript only, so seed the compiled script
+rather than `prisma db seed` (which would look for the TypeScript sources).
 
 The app is at **http://localhost:8080**, the API at **http://localhost:4000/api**.
 
