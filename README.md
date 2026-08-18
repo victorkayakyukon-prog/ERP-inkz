@@ -7,6 +7,19 @@ plus the customer record, the shop schedule and the material inventory behind it
 
 ## Quick start
 
+### GitHub Codespaces (runs in a browser — nothing to install)
+
+Open the repository on GitHub → **Code ▾ → Codespaces → Create codespace**.
+The devcontainer builds Node and Postgres, installs dependencies, applies the
+schema and loads the demo data on its own. When it finishes:
+
+```bash
+npm run dev
+```
+
+Click the forwarded **port 5173** to open the app. Useful when Docker cannot be
+installed locally.
+
 ### Docker (nothing installed but Docker)
 
 ```bash
