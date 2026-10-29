@@ -1,0 +1,34 @@
+{%- comment -%}
+  Tells shoppers about the "first item free" offer.
+  Render it from the cart template or a product template:
+    {% render 'first-item-free-banner' %}
+  The discount itself is applied by the First Item Free app at checkout;
+  this snippet only explains it.
+{%- endcomment -%}
+
+<div class="first-item-free-banner" role="status">
+  {%- if cart.item_count == 0 -%}
+    <strong>Your first item is free!</strong>
+    Add anything to your cart and we'll take it off at checkout.
+  {%- elsif cart.item_count == 1 -%}
+    <strong>This one's on us.</strong>
+    Your item is free. Any extra items are charged at the normal price.
+  {%- else -%}
+    <strong>1 item free.</strong>
+    The lowest-priced item in your cart is free. The other
+    {{ cart.item_count | minus: 1 }} {{ cart.item_count | minus: 1 | pluralize: 'item is', 'items are' }}
+    charged at the normal price.
+  {%- endif -%}
+</div>
+
+<style>
+  .first-item-free-banner {
+    margin: 0 0 1.5rem;
+    padding: 0.875rem 1rem;
+    border-radius: 0.5rem;
+    background: rgb(var(--color-foreground, 18 18 18) / 0.04);
+    border: 1px solid rgb(var(--color-foreground, 18 18 18) / 0.12);
+    font-size: 1.4rem;
+    line-height: 1.5;
+  }
+</style>

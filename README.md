@@ -229,3 +229,8 @@ quote calls into the jobs service; completing an install advances the job).
 Stripe, QuickBooks and e-signature providers are **stubbed with clear TODOs**
 rather than half-integrated. See [docs/INTEGRATIONS.md](docs/INTEGRATIONS.md) for
 exactly where each hook lives and what wiring one up involves.
+
+## Shopify store: "first item free"
+
+`shopify-store/` is a separate Shopify app that makes one item per order free
+and charges full price for the rest. See [`shopify-store/README.md`](shopify-store/README.md).

@@ -1,0 +1,16 @@
+{
+  "name": "first-item-free-app",
+  "private": true,
+  "version": "0.1.0",
+  "description": "Shopify app: the cheapest item in every cart is free, the rest are full price",
+  "workspaces": ["extensions/*"],
+  "scripts": {
+    "dev": "shopify app dev",
+    "deploy": "shopify app deploy",
+    "test": "npm run test --workspace=extensions/first-item-free"
+  },
+  "devDependencies": {
+    "@shopify/cli": "^5.0.0"
+  },
+  "engines": { "node": ">=20" }
+}
